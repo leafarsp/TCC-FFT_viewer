@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled source #
 ###################
 *.com
@@ -40,3 +41,10 @@ ACC/
 FFT/
 Grafs/
 Speed/
+=======
+venv/
+FFT/
+Speed/
+ACC/
+Grafs/
+>>>>>>> 669c6e5fe737e1fd6403029cef40d20dc0d8fb02

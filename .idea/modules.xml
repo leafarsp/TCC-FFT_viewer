@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/FFTViewer2.iml" filepath="$PROJECT_DIR$/.idea/FFTViewer2.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/FFT_Viewer.iml" filepath="$PROJECT_DIR$/.idea/FFT_Viewer.iml" />
+>>>>>>> 669c6e5fe737e1fd6403029cef40d20dc0d8fb02
     </modules>
   </component>
 </project>

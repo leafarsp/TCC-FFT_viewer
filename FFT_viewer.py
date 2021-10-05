@@ -95,6 +95,50 @@ def main():
                     aq_tau = float(fields[6])
                 except:
                     aq_tau = 0.
+            if fields[0] == 'RMS-ACC':
+                try:
+                    rms_acc_x = float(fields[2])
+                except:
+                    rms_acc_x=0.
+                try:
+                    rms_acc_y = float(fields[4])
+                except:
+                    rms_acc_y = 0.
+
+                try:
+                    rms_acc_z = float(fields[6])
+                except:
+                    rms_acc_z = 0.
+
+            if fields[0] == 'RMS-Speed':
+                try:
+                    rms_speed_x = float(fields[2])
+                except:
+                    rms_speed_x=0.
+                try:
+                    rms_speed_y = float(fields[4])
+                except:
+                    rms_speed_y = 0.
+
+                try:
+                    rms_speed_z = float(fields[6])
+                except:
+                    rms_speed_z = 0.
+
+            if fields[0] == 'Pico-ACC':
+                try:
+                    pico_acc_x = float(fields[2])
+                except:
+                    pico_acc_x=0.
+                try:
+                    pico_acc_y = float(fields[4])
+                except:
+                    pico_acc_y = 0.
+
+                try:
+                    pico_acc_z = float(fields[6])
+                except:
+                    pico_acc_z = 0.
 
                 try:
                     aq_amostras = int(fields[8])
@@ -295,6 +339,7 @@ def main():
                         dfAcc.dropna(how='any',axis=0,inplace=True)
                         flagstartFFT = False
                         plt.clf()
+
                         fig.suptitle(f'freq:{aq_fr:.2f}Hz Per: {aq_pr*1000:.3f}ms Tau: {aq_tau:.3}s '
                                      f'Amostras: {aq_amostras} fft_res:{aq_FFT_fr_res}Hz\n'
                                      f'RMS_vel[mm/s]:x={rms_speed_x:.2f} y={rms_speed_y:.2f} z={rms_speed_z:.2}  '
@@ -342,17 +387,33 @@ def main():
                         #print(rms_speed_x_plot)
 
 
+
+                        fig.suptitle(f'freq:{aq_fr:.2f}Hz Per: {aq_pr*1000:.3f}ms Tau: {aq_tau:.3}s')
+                        plt.text(f'RMS_vel[mm/s]:x={rms_speed_x:.2f} y={rms_speed_y:.2f} z={rms_speed_z:.2}'
+                                     f'RMS_acc[m/s^2]:x={rms_acc_x:.2f} y={rms_acc_y:.2f} z={rms_acc_z:.2}'
+                                     f'Pico_acc[m/s^2]:x={pico_acc_x:.2f} y={pico_acc_y:.2f} z={pico_acc_z:.2}',y=-10,s=10)
+                        plt.subplot(subplot_lin,subplot_col,1)
+                        plt.title('Eixo X')
+
                         plt.plot(dfAcc['ACCx'])
                         plt.plot(dfAcc['ACCx'].index,rms_acc_x_plot)
                         #plt.plot(pico_acc_x_plot / 100)
 
                         plt.subplot(subplot_lin, subplot_col, 2)
 
+
+                        plt.subplot(subplot_lin, subplot_col, 2)
+                        plt.title('Eixo Y')
+
                         plt.plot(dfAcc['ACCy'])
                         plt.plot(dfAcc['ACCy'].index,rms_acc_y_plot)
                         #plt.plot(pico_acc_y_plot/100)
 
                         plt.subplot(subplot_lin, subplot_col, 3)
+
+
+                        plt.subplot(subplot_lin, subplot_col, 3)
+                        plt.title('Eixo Z')
 
                         plt.plot(dfAcc['ACCz'])
                         plt.plot(dfAcc['ACCz'].index,rms_acc_z_plot)
@@ -392,6 +453,7 @@ def main():
                         f_res = (qt_amostras / T_amostragem) / fft_beams
                         #print(f'frequency resolution = {f_res}Hz')
 
+
                         f_range = np.linspace(0, (fft_beams / 2) * f_res, int(fft_beams / 2))
 
                         #spx = np.fft.fft(dfSpeed['Speed_x'],n=fft_beams)
@@ -402,6 +464,19 @@ def main():
                         spy = np.fft.fft(dfAcc['ACCy'], n=fft_beams)
                         spz = np.fft.fft(dfAcc['ACCz'], n=fft_beams)
 
+
+
+                        f_range = np.linspace(0, (fft_beams / 2) * f_res, int(fft_beams / 2))
+
+                        #spx = np.fft.fft(dfSpeed['Speed_x'],n=fft_beams)
+                        #spy = np.fft.fft(dfSpeed['Speed_y'],n=fft_beams)
+                        #spz = np.fft.fft(dfSpeed['Speed_z'],n=fft_beams)
+
+                        spx = np.fft.fft(dfAcc['ACCx'], n=fft_beams)
+                        spy = np.fft.fft(dfAcc['ACCy'], n=fft_beams)
+                        spz = np.fft.fft(dfAcc['ACCz'], n=fft_beams)
+
+
                         spModx = np.abs(spx)
                         spModHalfx = spModx[0:int(len(spModx)/2)]
                         spModHalfx = spModHalfx / (qt_amostras/4)
@@ -410,7 +485,11 @@ def main():
                         #plt.title('FFTx-P')
                         print(f'f_range={len(f_range)},spModHalfx={len(spModHalfx)}')
                         plt.plot(f_range,spModHalfx)
+
                         plt.xlabel('Eixo X')
+
+
+
 
 
                         spMody = np.abs(spy)
@@ -420,7 +499,9 @@ def main():
                         #plt.title('FFTy-P')
                         print(f'f_range={len(f_range)},spModHalfx={len(spModHalfy)}')
                         plt.plot(f_range, spModHalfy)
+
                         plt.xlabel('Eixo Y')
+
 
 
 
@@ -431,16 +512,26 @@ def main():
                         plt.subplot(subplot_lin, subplot_col, 12)
                         #plt.title('FFTz-P')
                         plt.plot(f_range,spModHalfz)
+
                         plt.xlabel('Eixo Z')
+
 
                         """"Verificação do cálculo de velocidade feito pela placa
                         #speed_x_calc = dfAcc['ACCx']
                         df_speed_x = integrate_acc_numerically(dfAcc['ACCx'], 'ACCx', 'Speed_x')
                         plt.subplot(subplot_lin, subplot_col, 13)
                         plt.plot(df_speed_x['Speed_x'])
+
                         df_speed_y = integrate_acc_numerically(dfAcc['ACCy'], 'ACCy', 'Speed_y')
                         plt.subplot(subplot_lin, subplot_col, 14)
                         plt.plot(df_speed_y['Speed_y'])
+
+
+                        df_speed_y = integrate_acc_numerically(dfAcc['ACCy'], 'ACCy', 'Speed_y')
+                        plt.subplot(subplot_lin, subplot_col, 14)
+                        plt.plot(df_speed_y['Speed_y'])
+
+
                         df_speed_z = integrate_acc_numerically(dfAcc['ACCz'], 'ACCz', 'Speed_z')
                         plt.subplot(subplot_lin, subplot_col, 15)
                         plt.plot(df_speed_z['Speed_z'])
