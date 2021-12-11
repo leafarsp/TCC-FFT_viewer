@@ -1,3 +1,7 @@
+#Este script faz a leitura dos dados enviados pela placa B-L475IOT01-A via porta serial, calcula a FTT
+#e exibe os gráficos.
+
+
 import serial
 from serial.tools.list_ports import comports
 import matplotlib.pyplot as plt
@@ -100,7 +104,7 @@ def main():
                     except:
                         aq_fr=0.
                     try:
-                        aq_pr = float(fields[4])
+                        aq_pr = float(fields[4])python
                     except:
                         aq_pr = 0.
 
